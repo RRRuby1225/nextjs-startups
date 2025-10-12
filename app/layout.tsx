@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local"; // 导入 localFont
+import localFont from "next/font/local";
 import "./globals.css";
-import 'easymde/dist/easymde.min.css'
-import { Suspense } from 'react'
+import "easymde/dist/easymde.min.css";
 
 const workSans = localFont({
   src: [
@@ -67,11 +66,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={workSans.variable}>
-       
-          {children}
-      
-      </body>
+      {/* 2. 移除 <Navbar /> 和 <main> 标签，只保留 body 和 children */}
+      <body className={workSans.variable}>{children}</body>
     </html>
   );
 }

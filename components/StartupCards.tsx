@@ -79,10 +79,13 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
 export default async function StartupCards({
   searchParams,
 }: {
+  // 确保这里的类型也是 Promise
   searchParams: Promise<{ query: string }>;
 }) {
+  // 在组件内部 await
   const params = await searchParams;
   const query = params?.query || "";
+
   const postsPromise = sanityFetch({
     query: STARTUPS_QUERY,
     params: { search: query || null },
