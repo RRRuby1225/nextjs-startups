@@ -53,27 +53,27 @@
   }
 
   .text-30-bold {
-    @apply text-[30px] font-bold text-black;
+    @apply text-[30px] font-bold ;
   }
 
   .text-30-semibold {
-    @apply font-semibold text-[30px] text-black;
+    @apply font-semibold text-[30px] ;
   }
 
   .text-26-semibold {
-    @apply font-semibold text-[26px] text-black;
+    @apply font-semibold text-[26px] ;
   }
 
   .text-24-black {
-    @apply text-[24px] font-black text-black;
+    @apply text-[24px] font-black ;
   }
 
   .text-20-medium {
-    @apply font-medium text-[20px] text-black;
+    @apply font-medium text-[20px];
   }
 
   .text-16-medium {
-    @apply font-medium text-[16px] text-black;
+    @apply font-medium text-[16px];
   }
 
   .text-14-normal {
@@ -140,7 +140,7 @@
   }
 
   .login {
-    @apply border-[5px] py-4 border-black bg-white text-black relative shadow-100 font-work-sans font-medium hover:shadow-none transition-all duration-500;
+    @apply border-[5px] py-4 border-black bg-white  relative shadow-100 font-work-sans font-medium hover:shadow-none transition-all duration-500;
   }
 
   /* searchform */
@@ -183,19 +183,19 @@
 
   /* startupform */
   .startup-form {
-    @apply max-w-2xl mx-auto bg-white my-10 space-y-8 px-6;
+    @apply max-w-2xl mx-auto bg-white my-10 space-y-8 px-6 ;
   }
 
   .startup-form_label {
-    @apply font-bold text-[18px] text-black uppercase;
+    @apply font-bold text-[18px] uppercase;
   }
 
   .startup-form_input {
-    @apply border-[3px] border-black px-5 py-7 text-[18px] text-black font-semibold rounded-full mt-3 placeholder:text-black-300;
+    @apply border-[3px] border-black px-5 py-7 text-[18px] font-semibold rounded-full mt-3 placeholder:text-black-300;
   }
 
   .startup-form_textarea {
-    @apply border-[3px] border-black p-5 text-[18px] text-black font-semibold rounded-[20px] mt-3 placeholder:text-black-300;
+    @apply border-[3px] border-black p-5 text-[18px] font-semibold rounded-[20px] mt-3 placeholder:text-black-300;
   }
 
   .startup-form_error {
@@ -203,7 +203,7 @@
   }
 
   .startup-form_editor {
-    @apply mt-3 border-[3px] border-black text-[18px] text-black font-semibold placeholder:text-black-300;
+    @apply mt-3 border-[3px] border-black text-[18px] font-semibold placeholder:text-black-300;
   }
 
   .startup-form_btn {

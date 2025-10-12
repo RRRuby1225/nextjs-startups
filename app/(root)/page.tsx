@@ -2,6 +2,7 @@ import SearchForm from "../../components/SearchForm";
 import { SanityLive } from "@/sanity/lib/live";
 import { Suspense } from "react";
 import StartupCards from "../../components/StartupCards";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home({
   searchParams,
@@ -20,13 +21,13 @@ export default function Home({
           Submit Ideas, Vote on Pitches, and Get Noticed in Virtual
           Competitions.
         </p>
-        <Suspense>
+        <Suspense fallback={<Skeleton />}>
           <SearchForm searchParams={searchParams} />
         </Suspense>
       </section>
 
       <section className="section_container">
-        <Suspense>
+        <Suspense fallback={<Skeleton />}>
           <SearchResults searchParams={searchParams} />
         </Suspense>
       </section>

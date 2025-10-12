@@ -8,7 +8,9 @@ export default function SignOut() {
         await signOut();
       }}
     >
-      <button type="submit">Sign Out</button>
+      <button type="submit">
+        <span className="max-sm:hidden">Sign Out</span>
+      </button>
     </form>
   );
 }

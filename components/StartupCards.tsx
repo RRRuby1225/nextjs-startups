@@ -53,7 +53,14 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
       </div>
       <Link href={`/startup/${_id}`}>
         <p className="startup-card_desc">{description}</p>
-        <img src={image} alt="placeholder" className="startup-card_img" />
+        <Image
+          src={image || "https://placehold.co/500x300"}
+          alt="placeholder"
+          width={500} // Provide an estimated width based on your image's typical size or aspect ratio (adjust as needed)
+          height={300} // Provide an estimated height (adjust as needed to match aspect ratio)
+          className="startup-card_img"
+          sizes="100vw" // Assumes the image may take full viewport width; adjust if the class implies a different responsive behavior (e.g., "50vw" if it's half-width)
+        />
       </Link>
 
       <div className="flex-between gap-3 mt-5">
