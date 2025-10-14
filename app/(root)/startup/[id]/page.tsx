@@ -9,9 +9,8 @@ import markdownit from "markdown-it";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
 
-// 1. PostContent 组件现在接收 Promise 类型的 params
 async function PostContent({ params }: { params: Promise<{ id: string }> }) {
-  // 2. await 操作安全地在组件内部进行
+  // await 操作安全地在组件内部进行
   const { id } = await params;
   const post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
 
@@ -23,11 +22,6 @@ async function PostContent({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <>
-      {/* 
-        3. 将静态布局部分也移回到 PostContent 内部。
-           这是因为这些布局（如 pink_container）的 *内容* 是动态的。
-           当 PostContent 挂起时，整个粉色区域及其内容都应该被 fallback 替代。
-      */}
       <section className="pink_container !min-h-[230px]">
         <p className="tag">{formatDate(post?._createdAt)}</p>
         <h1 className="heading">{post.title}</h1>
@@ -44,7 +38,6 @@ async function PostContent({ params }: { params: Promise<{ id: string }> }) {
           sizes="100vw"
         />
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
-          {/* ... 剩余的 JSX 保持不变 ... */}
           <div className="flex-between gap-5">
             <Link
               href={`/user/${post.author?._id}`}
@@ -83,17 +76,14 @@ async function PostContent({ params }: { params: Promise<{ id: string }> }) {
   );
 }
 
-// 4. Page 组件恢复为完全同步的静态外壳
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <>
-      {/* 5. 将 params Promise 直接传递给被 Suspense 包裹的子组件 */}
       <Suspense fallback={<Skeleton className="w-full h-screen" />}>
         <PostContent params={params} />
       </Suspense>
-
       <Suspense fallback={<Skeleton className="view-skeleton" />}>
-        <View />
+        <View params={params} />
       </Suspense>
     </>
   );

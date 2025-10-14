@@ -56,10 +56,10 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
         <Image
           src={image || "https://placehold.co/500x300"}
           alt="placeholder"
-          width={500} // Provide an estimated width based on your image's typical size or aspect ratio (adjust as needed)
-          height={300} // Provide an estimated height (adjust as needed to match aspect ratio)
+          width={500} 
+          height={300}
           className="startup-card_img"
-          sizes="100vw" // Assumes the image may take full viewport width; adjust if the class implies a different responsive behavior (e.g., "50vw" if it's half-width)
+          sizes="100vw"
         />
       </Link>
 
@@ -79,7 +79,6 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
 export default async function StartupCards({
   searchParams,
 }: {
-  // 确保这里的类型也是 Promise
   searchParams: Promise<{ query: string }>;
 }) {
   // 在组件内部 await

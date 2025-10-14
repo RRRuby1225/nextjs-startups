@@ -22,11 +22,10 @@ async function SearchResults({
   );
 }
 
-// 首页组件
+
 export default function Home({
   searchParams,
 }: {
-  // 将这里的类型定义从普通对象修正为 Promise
   searchParams: Promise<{ query: string }>;
 }) {
   return (
@@ -43,7 +42,6 @@ export default function Home({
 
         {/* 动态部分：搜索表单 */}
         <Suspense fallback={<Skeleton className="search-form h-[80px]" />}>
-          {/* 现在 TypeScript 知道你传递的是一个 Promise，类型匹配，报错消失 */}
           <SearchForm searchParams={searchParams} />
         </Suspense>
       </section>
@@ -52,7 +50,6 @@ export default function Home({
       <section className="section_container">
         {/* 动态部分：搜索结果 */}
         <Suspense fallback={<Skeleton className="w-full h-96" />}>
-          {/* 这里也一样，报错消失 */}
           <SearchResults searchParams={searchParams} />
         </Suspense>
       </section>

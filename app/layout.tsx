@@ -66,7 +66,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* 2. 移除 <Navbar /> 和 <main> 标签，只保留 body 和 children */}
       <body className={workSans.variable}>{children}</body>
     </html>
   );
