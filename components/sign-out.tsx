@@ -1,4 +1,5 @@
 import { signOut } from "@/auth";
+import { LogOut } from "lucide-react";
 
 export default function SignOut() {
   return (
@@ -9,7 +10,8 @@ export default function SignOut() {
       }}
     >
       <button type="submit">
-        <span className="max-sm:hidden">Sign Out</span>
+        <span className="max-sm:hidden">Logout</span>
+        <LogOut className="size-6 sm:hidden text-red-500" />
       </button>
     </form>
   );

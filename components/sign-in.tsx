@@ -1,4 +1,5 @@
 import { signIn } from "@/auth";
+import { BadgePlus } from "lucide-react";
 import Link from "next/link";
 
 export default function SignIn() {
@@ -9,11 +10,8 @@ export default function SignIn() {
         await signIn("github");
       }}
     >
-      <Link href="/startup/create">
-        <span className="max-sm:hidden">Create</span>
-      </Link>
       <button type="submit">
-        <span className="max-sm:hidden">Signin with GitHub</span>
+        <span className="max-sm:hidden">Login</span>
       </button>
     </form>
   );
