@@ -9,12 +9,13 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '*',
       },
+      
     ],
+    
   },
-
-  experimental: {
-    cacheComponents: true,
-  },
+  // experimental: {
+  //   cacheComponents: true,
+  // },
 };
 
 export default nextConfig;

@@ -1,57 +1,51 @@
 import SearchForm from "@/components/SearchForm";
-import { SanityLive } from "@/sanity/lib/live";
-import { Suspense } from "react";
-import StartupCards from "@/components/StartupCards";
-import { Skeleton } from "@/components/ui/skeleton";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
-async function SearchResults({
+
+export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ query: string }>;
+  searchParams: Promise<{ query?: string }>;  
 }) {
-  const params = await searchParams;
-  const query = params?.query || "";
+  const query = (await searchParams).query;
+  const params = { search: query || null };
+
+
+
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
 
   return (
     <>
-      <p className="text-30-semibold">
-        {query ? `Search results for "${query}"` : "All Startups"}
-      </p>
-      <StartupCards searchParams={searchParams} />
-    </>
-  );
-}
-
-
-export default function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ query: string }>;
-}) {
-  return (
-    <>
-      {/* 静态部分：顶部 Banner 和标题 */}
       <section className="pink_container">
         <h1 className="heading">
-          Pitch Your Startup , Connect With Entrepreneurs
+          Pitch Your Startup, <br />
+          Connect With Entrepreneurs
         </h1>
+
         <p className="sub-heading !max-w-3xl">
           Submit Ideas, Vote on Pitches, and Get Noticed in Virtual
           Competitions.
         </p>
 
-        {/* 动态部分：搜索表单 */}
-        <Suspense fallback={<Skeleton className="search-form h-[80px]" />}>
-          <SearchForm searchParams={searchParams} />
-        </Suspense>
+        <SearchForm query={query} />
       </section>
 
-      {/* 静态部分：内容区域的容器 */}
       <section className="section_container">
-        {/* 动态部分：搜索结果 */}
-        <Suspense fallback={<Skeleton className="w-full h-96" />}>
-          <SearchResults searchParams={searchParams} />
-        </Suspense>
+        <p className="text-30-semibold">
+          {query ? `Search results for "${query}"` : "All Startups"}
+        </p>
+
+        <ul className="mt-7 card_grid">
+          {posts?.length > 0 ? (
+            posts.map((post: StartupTypeCard) => (
+              <StartupCard key={post?._id} post={post} />
+            ))
+          ) : (
+            <p className="no-results">No startups found</p>
+          )}
+        </ul>
       </section>
 
       <SanityLive />

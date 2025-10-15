@@ -1,23 +1,21 @@
 "use client";
-import { useRouter } from "next/navigation";
+
+import Link from "next/link";
 import { X } from "lucide-react";
 
 const SearchFormReset = () => {
-  const router = useRouter();
-
   const reset = () => {
-    const form = document.querySelector("form");
-    if (form) {
-      form.reset();
-    }
-    router.push("/");
+    const form = document.querySelector(".search-form") as HTMLFormElement;
+
+    if (form) form.reset();
   };
 
   return (
-    <button type="reset" onClick={reset} className="search-btn text-white">
-      <X />
+    <button type="reset" onClick={reset}>
+      <Link href="/" className="search-btn text-white">
+        <X className="size-5" />
+      </Link>
     </button>
   );
 };
-
 export default SearchFormReset;
