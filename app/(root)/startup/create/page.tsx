@@ -1,11 +1,19 @@
 import React from 'react'
+import StartupForm from '@/components/StartupForm'
+import { auth } from '@/auth';
+import { redirect } from 'next/dist/server/api-utils';
 
-export const page = () => {
+const page = async() => {
+  const session = await auth();
+  if (!session || !session?.user) {
+    redirect('/login',);
+  }
   return (
     <>
       <section className='pink_container !min-h-[230px]'>
           <h1 className='heading'>Submit Your Startup Pitch</h1>
       </section>
+      <StartupForm />
     </>
   )
 }
