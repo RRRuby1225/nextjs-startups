@@ -1,167 +1,78 @@
 "use client";
 
 import { useState, useActionState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import MDEditor from "@uiw/react-md-editor";
-import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
-import { formSchema } from "@/lib/validation";
-import { z } from "zod";
-import { useRouter } from "next/navigation";
-import { createPitch } from "@/lib/actions";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { formSchema } from "@/lib/validation";
+import { createPitch } from "@/lib/actions";
 
-const StartupForm = () => {
-  const [errors, setErrors] = useState<Record<string, string>>({});
+import { StartupFormFields } from "./StartupForm/StartupFormFields";
+import { StartupPitchEditor } from "./StartupForm/StartupPitchEditor";
+import { StartupFormActions } from "./StartupForm/StartupFormActions";
+
+export default function StartupForm() {
   const [pitch, setPitch] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
 
+  //提交业务逻辑
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
+      // 从formData中提取表单值
       const formValues = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
         category: formData.get("category") as string,
         link: formData.get("link") as string,
-        pitch,
+        pitch, // Markdown（从状态取）
       };
 
+      // 验证：检查格式
       await formSchema.parseAsync(formValues);
+      const result = await createPitch(formData, pitch);
 
-      const result = await createPitch(prevState, formData, pitch);
-
-      if (result.status == "SUCCESS") {
+      // 处理成功响应
+      if (result.status === "SUCCESS") {
         toast.success("Your startup pitch has been created successfully");
-
         router.push(`/startup/${result._id}`);
       }
-
-      return result;
+      return result; // 返回结果给React
     } catch (error) {
+      // ✅ 错误处理
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
-
+        // 在字段下显示错误
+        // setErrors更新状态 → React重渲染 → 条件渲染显示<p class="error">
+        // as unknown as = TypeScript骗编译器，React不知道
         setErrors(fieldErrors as unknown as Record<string, string>);
         toast.error("Please check your inputs and try again");
-
+        // ...prevState管理按钮状态
+        // isPending=true = 按钮禁用不闪
+        // status="ERROR" = 表单知道出问题
         return { ...prevState, error: "Validation failed", status: "ERROR" };
       }
       toast.error("An unexpected error has occurred");
-
-      return {
-        ...prevState,
-        error: "An unexpected error has occurred",
-        status: "ERROR",
-      };
+      return { ...prevState, error: "An unexpected error", status: "ERROR" };
     }
   };
 
+  //表单状态管理
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
+    // 初始状态：无错误、未提交
     error: "",
     status: "INITIAL",
   });
 
   return (
     <form action={formAction} className="startup-form">
-      <div>
-        <label htmlFor="title" className="startup-form_label">
-          Title
-        </label>
-        <Input
-          id="title"
-          name="title"
-          className="startup-form_input"
-          required
-          placeholder="Startup Title"
-        />
-
-        {errors.title && <p className="startup-form_error">{errors.title}</p>}
-      </div>
-
-      <div>
-        <label htmlFor="description" className="startup-form_label">
-          Description
-        </label>
-        <Textarea
-          id="description"
-          name="description"
-          className="startup-form_textarea"
-          required
-          placeholder="Startup Description"
-        />
-
-        {errors.description && (
-          <p className="startup-form_error">{errors.description}</p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="category" className="startup-form_label">
-          Category
-        </label>
-        <Input
-          id="category"
-          name="category"
-          className="startup-form_input"
-          required
-          placeholder="Startup Category (Tech, Health, Education...)"
-        />
-
-        {errors.category && (
-          <p className="startup-form_error">{errors.category}</p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="link" className="startup-form_label">
-          Image URL
-        </label>
-        <Input
-          id="link"
-          name="link"
-          className="startup-form_input"
-          required
-          placeholder="Startup Image URL"
-        />
-
-        {errors.link && <p className="startup-form_error">{errors.link}</p>}
-      </div>
-
-      <div data-color-mode="light">
-        <label htmlFor="pitch" className="startup-form_label">
-          Pitch
-        </label>
-
-        <MDEditor
-          value={pitch}
-          onChange={(value) => setPitch(value as string)}
-          id="pitch"
-          preview="edit"
-          height={300}
-          style={{ borderRadius: 20, overflow: "hidden" }}
-          textareaProps={{
-            placeholder:
-              "Briefly describe your idea and what problem it solves",
-          }}
-          previewOptions={{
-            disallowedElements: ["style"],
-          }}
-        />
-
-        {errors.pitch && <p className="startup-form_error">{errors.pitch}</p>}
-      </div>
-
-      <Button
-        type="submit"
-        className="startup-form_btn text-white"
-        disabled={isPending}
-      >
-        {isPending ? "Submitting..." : "Submit Your Pitch"}
-        <Send className="size-6 ml-2" />
-      </Button>
+      <StartupFormFields errors={errors} />
+      <StartupPitchEditor
+        pitch={pitch}
+        onPitchChange={setPitch}
+        error={errors.pitch}
+      />
+      <StartupFormActions isPending={isPending} />
     </form>
   );
-};
-
-export default StartupForm;
+}
