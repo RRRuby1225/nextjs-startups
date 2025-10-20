@@ -39,7 +39,7 @@ export default function StartupForm() {
       }
       return result; // 返回结果给React
     } catch (error) {
-      // ✅ 错误处理
+      // 错误处理
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
         // 在字段下显示错误
