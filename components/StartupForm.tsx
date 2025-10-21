@@ -17,7 +17,7 @@ export default function StartupForm() {
   const router = useRouter();
 
   //提交业务逻辑
-  const handleFormSubmit = async (prevState: any, formData: FormData) => {
+  const handleFormSubmit = async (prevState: { error: string; status: string }, formData: FormData) => {
     try {
       // 从formData中提取表单值
       const formValues = {
