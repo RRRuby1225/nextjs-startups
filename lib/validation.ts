@@ -7,7 +7,7 @@ export const formSchema = z.object({
   link: z.string().url()
     .refine(async (url) => {
         try {
-            const res = await fetch(url, { method: 'HEAD' });
+            const res = await fetch(url, { method: 'GET' });//用HEAD总上传失败
             const contentType = res.headers.get('content-type');
             return contentType?.startsWith('image/');
         } catch (error) {
