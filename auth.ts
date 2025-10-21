@@ -8,15 +8,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [GitHub],
   //  By default, the `id` property does not exist on `token` or `session`. See the [TypeScript](https://authjs.dev/getting-started/typescript) on how to add it.
   callbacks: {
-    async signIn({ 
-      user:{name,email,image},
-      profile:{id,login,bio}
-    }) {
+    async signIn({ user: { name, email, image }, profile }) {
+      if (!profile) {
+        console.warn("Profile is undefined, skipping user creation");
+        return true; // 允许登录继续
+      }
+      const { id, login, bio } = profile as { id: string; login: string; bio?: string };
       const existingUser = await client
-      .withConfig({useCdn: false,})
-      .fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
-        id,
-      });
+        .withConfig({ useCdn: false })
+        .fetch(AUTHOR_BY_GITHUB_ID_QUERY, { id });
       if (!existingUser) {
         await writeClient.create({
           _type: "author",
